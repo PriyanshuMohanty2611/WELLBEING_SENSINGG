@@ -115,8 +115,11 @@ const MeasurementUI = ({ onComplete, onCancel }) => {
               </motion.div>
             ) : (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                   <h3 className="text-2xl font-black italic uppercase">Initialize Link</h3>
-                   <p className="text-gray-500 text-xs mt-2 max-w-[200px] leading-relaxed">Ensure fingertip covers camera lens or face is clearly visible.</p>
+                   <h3 className="text-2xl font-black italic uppercase">Initialize PPG Link</h3>
+                   <p className="text-gray-500 text-xs mt-2 max-w-[240px] mx-auto leading-relaxed">
+                     Place your fingertip completely over the <span className="text-white">rear camera lens</span>. 
+                     The system will use Photoplethysmography (light-based sensing) to calculate your neural pulse.
+                   </p>
                 </motion.div>
             )}
           </AnimatePresence>
