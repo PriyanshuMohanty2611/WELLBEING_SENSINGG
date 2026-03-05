@@ -17,25 +17,27 @@ const AvatarModel = ({ health }) => {
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
     if (meshRef.current) {
-      // Distortion speed increases with stress
-      meshRef.current.distort = 0.3 + (stress_score / 200);
-      meshRef.current.speed = 2 + (stress_score / 50);
+      // Get material direct access
+      const material = meshRef.current.material;
+      if (material) {
+        material.distort = 0.3 + (stress_score / 200);
+        material.speed = 2 + (stress_score / 50);
+      }
       
-      // Pulse animation
-      const scale = 1 + Math.sin(t * 2) * 0.05;
-      meshRef.current.parent.scale.set(scale, scale, scale);
+      // Pulse animation on the mesh itself
+      const scale = 1.5 + (Math.sin(t * 2) * 0.05); // Base scale 1.5
+      meshRef.current.scale.set(scale, scale, scale);
     }
   });
 
   return (
     <group>
       <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
-        <Sphere args={[1, 100, 100]} scale={1.5}>
+        <Sphere ref={meshRef} args={[1, 100, 100]} scale={1.5}>
           <MeshDistortMaterial
-            ref={meshRef}
             color={color}
             roughness={0.1}
-             metalness={1}
+            metalness={1}
             distort={0.4}
             speed={2}
           />

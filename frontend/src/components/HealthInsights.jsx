@@ -54,7 +54,7 @@ const HealthInsights = ({ userId = 1 }) => {
           </div>
           
           <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <BarChart data={statsData}>
                 <XAxis dataKey="name" stroke="#cbd5e1" fontSize={10} axisLine={false} tickLine={false} />
                 <Tooltip 
