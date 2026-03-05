@@ -34,7 +34,7 @@ const App = () => {
         </div>
         
         <div className="space-y-4">
-          <h1 className="text-6xl font-black tracking-tighter italic uppercase text-white">NeuroPulse<span className="text-cyan-400">AI</span></h1>
+          <h1 className="text-6xl font-black tracking-tighter italic uppercase text-white">WELLBEING<span className="text-cyan-400">_SENSINGG</span></h1>
           <p className="text-gray-500 text-lg font-bold tracking-[0.4em] uppercase">Human Optimization Engine</p>
         </div>
 

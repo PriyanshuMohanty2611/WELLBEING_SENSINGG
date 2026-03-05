@@ -28,7 +28,7 @@ const NeuroPulseDashboard = ({ data, onBack }) => {
               <Zap size={24} className="text-cyan-400" />
            </div>
            <div>
-              <h1 className="text-2xl font-black tracking-tight uppercase italic">NeuroPulse AI</h1>
+              <h1 className="text-2xl font-black tracking-tight uppercase italic">WELLBEING_SENSINGG</h1>
               <p className="text-gray-500 text-xs font-bold tracking-[0.2em]">SYSTEM OPERATIONAL</p>
            </div>
         </div>
