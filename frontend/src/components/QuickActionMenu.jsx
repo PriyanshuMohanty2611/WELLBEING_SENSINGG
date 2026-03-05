@@ -29,8 +29,8 @@ const QuickActionMenu = ({ isOpen, onClose, onAction }) => {
 
             <div className="flex justify-between items-center mb-10 px-2">
               <div>
-                <h2 className="text-2xl font-black italic uppercase tracking-tight text-slate-900">Neural Registry</h2>
-                <p className="text-slate-400 text-[10px] font-bold tracking-[0.3em] uppercase">Select Integration Channel</p>
+                <h2 className="text-2xl font-black italic uppercase tracking-tight text-slate-900">Module Registry</h2>
+                <p className="text-slate-400 text-[10px] font-bold tracking-[0.3em] uppercase">Authorized System Integration</p>
               </div>
               <button 
                 onClick={onClose}
@@ -49,39 +49,39 @@ const QuickActionMenu = ({ isOpen, onClose, onAction }) => {
                 primary
               />
               <ActionButton 
-                icon={<BrainCircuit className="text-purple-600" />} 
-                title="Flow State" 
-                subtitle="Somatic Calibration"
-                onClick={() => onAction('mood')}
+                icon={<Moon className="text-indigo-600" />} 
+                title="Sleep Audit" 
+                subtitle="Hypnogogic Check"
+                onClick={() => onAction('sleep')}
               />
               <ActionButton 
-                icon={<Cpu className="text-indigo-600" />} 
-                title="IoT Link" 
-                subtitle="Sync BLE Nodes"
-                onClick={() => onAction('iot')}
+                icon={<Utensils className="text-amber-500" />} 
+                title="Nutrient Log" 
+                subtitle="Metabolic Packet"
+                onClick={() => onAction('nutrition')}
               />
               <ActionButton 
-                icon={<Smile className="text-amber-500" />} 
+                icon={<Footprints className="text-emerald-600" />} 
+                title="Kinetic Sync" 
+                subtitle="Step Count Logic"
+                onClick={() => onAction('activity')}
+              />
+              <ActionButton 
+                icon={<Smile className="text-purple-600" />} 
                 title="Mood Metric" 
                 subtitle="Neural Feedback"
                 onClick={() => onAction('mood')}
               />
               <ActionButton 
-                icon={<Droplets className="text-blue-600" />} 
-                title="Fluid Sync" 
-                subtitle="Hydration Level"
-                onClick={() => onAction('water')}
-              />
-              <ActionButton 
-                icon={<FileText className="text-rose-500" />} 
-                title="MedScan AI" 
-                subtitle="OCR Lab Logic"
-                onClick={() => onAction('ocr')}
+                icon={<Shield className="text-slate-400" />} 
+                title="Secure Export" 
+                subtitle="CSV/PDF Protocol"
+                onClick={() => onAction('export')}
               />
             </div>
 
             <div className="mt-10 flex items-center justify-center gap-2 text-slate-300 text-[10px] font-black uppercase tracking-[0.4em]">
-                <Shield size={12} className="text-cyan-600" /> Bio-Metric Tunnel Encrypted
+                <Shield size={12} className="text-emerald-500" /> System Portals Neural-Encrypted
             </div>
           </motion.div>
         </>
@@ -92,14 +92,14 @@ const QuickActionMenu = ({ isOpen, onClose, onAction }) => {
 
 const ActionButton = ({ icon, title, subtitle, onClick, primary = false }) => (
   <motion.button
-    whileHover={{ scale: 1.02, backgroundColor: primary ? "#f1f5f9" : "#fff" }}
+    whileHover={{ scale: 1.02, backgroundColor: primary ? "#f8fafc" : "#fff" }}
     whileTap={{ scale: 0.98 }}
     onClick={onClick}
     className={`p-5 rounded-[2.5rem] border text-left flex flex-col gap-3 transition-all ${
-      primary ? 'bg-slate-50 border-slate-200' : 'bg-white border-slate-100 shadow-sm'
+      primary ? 'bg-slate-50 border-slate-200 shadow-enterprise' : 'bg-white border-slate-100 shadow-sm'
     }`}
   >
-    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-inner">
+    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-inner group-hover:bg-slate-900 transition-colors">
       {icon}
     </div>
     <div>

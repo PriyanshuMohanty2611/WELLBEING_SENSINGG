@@ -14,83 +14,69 @@
 
 @layer utilities {
   .glass {
-    @apply bg-white/10 backdrop-blur-lg border border-white/10 shadow-xl;
+    @apply bg-white border border-slate-200 shadow-sm transition-all duration-300;
   }
   .glass-card {
-    @apply bg-surface/50 backdrop-blur-md border border-white/5 rounded-2xl shadow-lg;
+    @apply bg-white border border-slate-100 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300;
   }
-  .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
+  .card-hover {
+    @apply hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/5 transition-all duration-300 transform hover:-translate-y-1;
   }
 }
 
-/* Custom Scrollbar */
+/* Professional SaaS Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #1a0b2e; 
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2d1b4e; 
-  border-radius: 4px;
+  background: #cbd5e1; 
+  border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #00d4ff; 
+  background: #94a3b8; 
 }
 
-/* Animations from HealthTrackerApp */
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-100vh) rotate(360deg); }
+/* Dashboard Layout Utilities */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
 }
+
+/* Professional Animations */
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+
+@keyframes scale-up {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
+
 .animate-fade-in {
-  animation: fade-in 0.8s ease-out;
-}
-.animate-slide-up {
-  animation: slide-up 0.6s ease-out 0.3s backwards;
+  animation: fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes twinkle {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.5); }
-}
-.animate-twinkle {
-  animation: twinkle 2s ease-in-out infinite;
+.animate-scale-up {
+  animation: scale-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes wave {
-  0%, 100% { transform: translateY(0) scaleX(1); }
-  50% { transform: translateY(-20px) scaleX(1.1); }
-}
-@keyframes float-away {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(calc(-50% + var(--float-x)), calc(-50% + var(--float-y))) scale(0);
-    opacity: 0;
-  }
-}
-.animate-float-away {
-  animation: float-away 1.5s ease-out forwards;
+/* Focus and Active States */
+.active-nav-item {
+  @apply bg-slate-900 text-white shadow-lg shadow-slate-900/20;
 }
 
-@keyframes grow {
-  from {
-    height: 0;
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+/* Enterprise Shadows */
+.shadow-enterprise {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
 }
+
+.shadow-enterprise-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+}
+

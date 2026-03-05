@@ -1,11 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Zap, Activity, Battery, Thermometer, Wind, Droplets, ArrowRight, BrainCircuit, Target, ShieldCheck } from 'lucide-react';
+import { 
+  Heart, Zap, Activity, Battery, Thermometer, 
+  Wind, Droplets, ArrowRight, BrainCircuit, 
+  Target, ShieldCheck, Download, ChevronLeft, Sparkles
+} from 'lucide-react';
 import GlassCard from './GlassCard';
-import ThreeHeart from './ThreeHeart';
-
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import DigitalTwin from './DigitalTwin';
+import DigitalWatch from './DigitalWatch';
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 const HealthDashboard = ({ data, onBack }) => {
   const {
@@ -20,130 +23,141 @@ const HealthDashboard = ({ data, onBack }) => {
     { name: '12:00', val: 75 }, { name: '16:00', val: 80 }, { name: '20:00', val: 70 }
   ];
 
-  // Calculate Neural Score (simulated based on metrics)
   const neuralScore = Math.floor((rmssd * 2) + (energy_score * 3) + focus_level + (100 - stress_score)) + 400;
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-900 p-6 pb-32 font-sans selection:bg-cyan-500/30">
-      <header className="flex justify-between items-center mb-10 pt-4">
-        <div className="flex items-center gap-4">
-           <div className="w-12 h-12 bg-cyan-500/10 rounded-2xl flex items-center justify-center border border-cyan-500/20">
-              <Zap size={24} className="text-cyan-600" />
-           </div>
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900 p-8 pb-32 animate-fade-in font-sans">
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 pt-4">
+        <div className="flex items-center gap-6">
+           <motion.button 
+             whileHover={{ scale: 1.1 }}
+             whileTap={{ scale: 0.9 }}
+             onClick={onBack}
+             className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center border border-slate-100 shadow-enterprise"
+           >
+              <ChevronLeft size={20} className="text-slate-900" />
+           </motion.button>
            <div>
-              <h1 className="text-2xl font-black tracking-tight uppercase italic text-slate-900">WELLBEING_SENSINGG</h1>
-              <p className="text-slate-400 text-xs font-bold tracking-[0.2em]">SYSTEM OPERATIONAL</p>
+              <h1 className="text-2xl font-black tracking-tight uppercase italic text-slate-900">Biometric Override</h1>
+              <p className="text-slate-400 text-[10px] font-black tracking-[0.4em] uppercase">SYSTEM PORTAL ACTIVE • SESSION 0921-A</p>
            </div>
         </div>
-        <div className="text-right">
-           <p className="text-slate-400 text-xs font-bold">RECOVERY STATE</p>
-           <p className={`text-sm font-black ${recovery_state === 'Optimal' ? 'text-emerald-600' : 'text-orange-600'}`}>{recovery_state.toUpperCase()}</p>
+        <div className="flex gap-4">
+           <div className="text-right border-r border-slate-100 pr-6">
+              <p className="text-slate-400 text-[9px] font-black uppercase tracking-widest">Integrity Status</p>
+              <p className={`text-sm font-black italic ${recovery_state === 'Optimal' ? 'text-emerald-600' : 'text-amber-600'}`}>
+                {recovery_state.toUpperCase()}
+              </p>
+           </div>
+           <motion.button 
+             whileHover={{ x: 3 }}
+             className="px-6 py-3 bg-slate-900 text-white rounded-2xl font-black uppercase text-[10px] tracking-[0.3em] flex items-center gap-3 shadow-lg shadow-slate-200"
+           >
+              <Download size={14} className="text-cyan-400" /> Export Data
+           </motion.button>
         </div>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Neural Score Hexagon-Style Card */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Core Analysis Card */}
         <div className="lg:col-span-12">
-           <GlassCard className="bg-gradient-to-br from-indigo-500/5 to-white border-indigo-500/10">
-              <div className="flex flex-col md:flex-row justify-between items-center gap-8 py-4">
-                  <div className="text-center md:text-left">
-                     <p className="text-xs font-black text-indigo-500 uppercase tracking-widest mb-1">Neural Health Index</p>
-                     <h2 className="text-7xl font-black italic tracking-tighter text-slate-900">{neuralScore}</h2>
-                     <p className="text-slate-400 text-sm font-medium mt-2 flex items-center gap-2 justify-center md:justify-start">
-                        <ShieldCheck size={16} className="text-emerald-500" /> 
-                        Top 5% for your age group
-                     </p>
+           <GlassCard className="p-10 border-slate-200/50">
+              <div className="flex flex-col lg:flex-row gap-12 items-center">
+                  <div className="w-full lg:w-1/2 space-y-8">
+                      <div>
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-3">Neural Health Index</p>
+                        <div className="flex items-baseline gap-4">
+                          <h2 className="text-8xl font-black italic tracking-tighter text-slate-900">{neuralScore}</h2>
+                          <div className="px-4 py-1.5 bg-emerald-50 rounded-full border border-emerald-100 flex items-center gap-2">
+                             <ShieldCheck size={14} className="text-emerald-500" />
+                             <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Optimal Range</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-4">
+                         <DetailMetric label="Somatic Energy" value={`${energy_score}%`} status="High" />
+                         <DetailMetric label="Cognitive Focus" value={`${focus_level}%`} status="Peak" />
+                         <DetailMetric label="ANS Stress" value={`${stress_score}%`} status="Low" inverse />
+                         <DetailMetric label="Base RMSSD" value={`${rmssd}ms`} status="Stable" />
+                      </div>
                   </div>
-                  <div className="flex gap-4">
-                     <HighlightBox icon={<Target className="text-blue-500" />} label="Focus Mode" value="Active" />
-                     <HighlightBox icon={<BrainCircuit className="text-purple-500" />} label="Cognitive Load" value="Low" />
+                  <div className="w-full lg:w-1/2 h-80 relative">
+                      <div className="absolute inset-0 bg-cyan-500/5 blur-[100px] rounded-full" />
+                      <DigitalTwin health={{ stress_score, energy_score }} />
                   </div>
               </div>
            </GlassCard>
         </div>
 
-        {/* Digital Twin Visualization */}
-        <div className="lg:col-span-12">
-            <GlassCard className="border-cyan-500/10 bg-white">
-                <div className="flex flex-col md:flex-row items-center gap-8">
-                    <div className="w-full md:w-1/2">
-                        <DigitalTwin health={{ stress_score, energy_score }} />
-                    </div>
-                    <div className="w-full md:w-1/2 space-y-6">
-                       <h3 className="text-3xl font-black text-slate-900 leading-tight">Biometric Simulation</h3>
-                       <p className="text-slate-500 leading-relaxed text-sm">
-                         Your digital twin is resonating at <span className="text-cyan-600 font-bold">High Coherence</span>. 
-                         Autonomic nervous system (ANS) patterns indicate deep physiological readiness.
-                       </p>
-                       <div className="grid grid-cols-2 gap-4">
-                          <MetricBox label="Energy Store" value={`${energy_score}%`} color="text-cyan-600" bg="bg-cyan-50" />
-                          <MetricBox label="Focus Buffer" value={`${focus_level}%`} color="text-purple-600" bg="bg-purple-50" />
-                          <MetricBox label="Sympathetic Stress" value={`${stress_score}%`} color="text-rose-600" bg="bg-rose-50" />
-                          <MetricBox label="RMSSD" value={`${rmssd}ms`} color="text-emerald-600" bg="bg-emerald-50" />
-                       </div>
-                    </div>
-                </div>
-            </GlassCard>
-        </div>
-
-        {/* Deep HRV Analytics */}
+        {/* Temporal Trends */}
         <div className="lg:col-span-8">
-            <GlassCard className="h-full bg-white">
-                <div className="flex justify-between items-center mb-6">
-                    <h4 className="font-black text-slate-900 flex items-center gap-2 uppercase text-xs tracking-widest">
-                       <Activity size={18} className="text-cyan-600" /> Pulse Temporal Analysis
-                    </h4>
-                    <div className="flex gap-2">
-                        {['24H', '7D', '30D'].map(t => <button key={t} className="text-[10px] px-3 py-1 bg-slate-50 text-slate-600 font-bold rounded-full border border-slate-100 hover:bg-slate-100">{t}</button>)}
+            <GlassCard className="p-8 h-full">
+                <div className="flex justify-between items-center mb-10">
+                    <h3 className="text-sm font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-3">
+                       <Activity size={18} className="text-slate-900" /> Temporal Pulse Waveform
+                    </h3>
+                    <div className="flex gap-2 bg-slate-50 p-1 rounded-xl border border-slate-100">
+                        {['1H', '24H', '7D'].map(t => <button key={t} className={`px-4 py-1.5 text-[9px] font-black uppercase rounded-lg transition-all ${t === '24H' ? 'bg-white text-slate-900 shadow-sm border border-slate-100' : 'text-slate-400 hover:text-slate-600'}`}>{t}</button>)}
                     </div>
                 </div>
-                <div className="h-64 mt-4">
+                <div className="h-72">
                   <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                     <AreaChart data={historyData}>
                       <defs>
-                        <linearGradient id="colorVal" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.2}/>
-                          <stop offset="95%" stopColor="#06b6d4" stopOpacity={0}/>
+                        <linearGradient id="dashboardGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#1e293b" stopOpacity={0.1}/>
+                          <stop offset="95%" stopColor="#1e293b" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
                       <XAxis dataKey="name" stroke="#cbd5e1" fontSize={10} axisLine={false} tickLine={false} />
-                      <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }} />
-                      <Area type="monotone" dataKey="val" stroke="#06b6d4" fillOpacity={1} fill="url(#colorVal)" strokeWidth={4} />
+                      <Tooltip 
+                        contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '16px', color: '#fff', boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.25)' }} 
+                        itemStyle={{ color: '#fff' }}
+                      />
+                      <Area type="monotone" dataKey="val" stroke="#1e293b" fill="url(#dashboardGrad)" strokeWidth={4} />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
             </GlassCard>
         </div>
 
-        {/* Bio-Diagnostics */}
+        {/* Tactical Metrics Rack */}
         <div className="lg:col-span-4 space-y-6">
-           <GlassCard className="bg-emerald-50 border-emerald-100 shadow-none">
-              <p className="text-xs text-emerald-600 font-black tracking-widest mb-2 uppercase">HRV Coherence</p>
-              <div className="flex justify-between items-end">
-                 <div>
-                    <h5 className="text-3xl font-black text-slate-900">{lf_hf_ratio.toFixed(1)} <span className="text-xs font-normal text-slate-500">Ratio</span></h5>
-                    <p className="text-[10px] text-slate-400 font-bold mt-1 uppercase">VNS Tone Balance</p>
-                 </div>
-                 <div className="w-20 bg-emerald-200/30 h-2 rounded-full overflow-hidden">
-                    <div className="h-full bg-emerald-500" style={{ width: `${Math.min(100, lf_hf_ratio * 20)}%` }} />
-                 </div>
+           <div className="flex justify-center mb-4">
+              <DigitalWatch />
+           </div>
+           <GlassCard className="p-8 bg-slate-900 text-white border-none shadow-enterprise-lg relative overflow-hidden">
+              <div className="relative z-10">
+                <p className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] mb-3">VNS Tone Balance</p>
+                <div className="flex justify-between items-end mb-6">
+                    <h4 className="text-4xl font-black italic tracking-tighter">{lf_hf_ratio.toFixed(1)} <span className="text-[10px] not-italic text-slate-500 ml-1 uppercase">Ratio</span></h4>
+                    <span className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em]">Resonant</span>
+                </div>
+                <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      animate={{ width: `${Math.min(100, lf_hf_ratio * 20)}%` }}
+                      className="h-full bg-cyan-400" 
+                    />
+                </div>
               </div>
+              <Sparkles className="absolute top-0 right-0 p-4 opacity-5" size={100} />
            </GlassCard>
            
-           <div className="grid grid-cols-2 gap-4">
-               <MiniVital label="TEMP" value={`${temperature}°C`} />
-               <MiniVital label="SPO2" value={`${oxygen_saturation}%`} />
-               <MiniVital label="BP" value={`${blood_pressure_sys}/${blood_pressure_dia}`} />
-               <MiniVital label="SDNN" value={`${sdnn}ms`} />
+           <div className="grid grid-cols-1 gap-4">
+              <MiniStat label="Oxygen Packet" value={`${oxygen_saturation}%`} icon={<Wind size={14} />} />
+              <MiniStat label="System Temp" value={`${temperature}°C`} icon={<Thermometer size={14} />} />
+              <MiniStat label="Blood Pressure" value={`${blood_pressure_sys}/${blood_pressure_dia}`} icon={<Zap size={14} />} />
            </div>
 
            <motion.button 
-             whileHover={{ scale: 1.02, boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1)" }}
+             whileHover={{ scale: 1.02 }}
              whileTap={{ scale: 0.98 }}
-             onClick={onBack}
-             className="w-full py-5 bg-slate-900 text-white rounded-3xl font-black text-xs tracking-[0.3em] uppercase flex items-center justify-center gap-3 transition-all"
+             onClick={() => window.location.reload()}
+             className="w-full py-5 bg-emerald-500 text-slate-900 rounded-[2rem] font-black text-[10px] tracking-[0.4em] uppercase flex items-center justify-center gap-3 shadow-lg shadow-emerald-500/20"
            >
-             Initialize New Scan <ArrowRight size={18} className="text-cyan-400" />
+             Initialize Recalibration
            </motion.button>
         </div>
       </div>
@@ -151,28 +165,29 @@ const HealthDashboard = ({ data, onBack }) => {
   );
 };
 
-const HighlightBox = ({ icon, label, value }) => (
-  <div className="bg-slate-50 p-4 rounded-3xl border border-slate-100 min-w-[120px]">
-    <div className="flex items-center gap-2 mb-1">
-       {icon}
-       <span className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">{label}</span>
+const DetailMetric = ({ label, value, status, inverse = false }) => (
+  <div className="bg-slate-50 border border-slate-100 p-5 rounded-3xl group hover:bg-white hover:border-slate-200 transition-all">
+    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">{label}</p>
+    <div className="flex justify-between items-end">
+      <p className="text-xl font-black text-slate-900 italic uppercase">{value}</p>
+      <p className={`text-[9px] font-black uppercase tracking-widest ${inverse ? 'text-rose-500' : 'text-emerald-500'}`}>{status}</p>
     </div>
-    <p className="font-bold text-slate-900">{value}</p>
   </div>
 );
 
-const MetricBox = ({ label, value, color, bg }) => (
-  <div className={`${bg} p-4 rounded-3xl border border-transparent hover:border-slate-200 transition-all`}>
-    <p className="text-slate-500 text-[10px] uppercase font-black tracking-wider">{label}</p>
-    <p className={`text-2xl font-black mt-1 ${color}`}>{value}</p>
-  </div>
-);
-
-const MiniVital = ({ label, value }) => (
-    <div className="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm">
-        <p className="text-slate-400 text-[9px] font-black tracking-widest uppercase">{label}</p>
-        <p className="text-md font-bold text-slate-900 mt-1">{value}</p>
+const MiniStat = ({ label, value, icon }) => (
+  <div className="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-enterprise flex justify-between items-center group hover:border-slate-300 transition-all">
+    <div className="flex items-center gap-4">
+       <div className="p-3 bg-slate-50 rounded-2xl text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all">
+          {icon}
+       </div>
+       <div>
+          <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{label}</p>
+          <p className="text-sm font-black text-slate-900 uppercase italic tracking-tight">{value}</p>
+       </div>
     </div>
+    <ChevronLeft size={14} className="text-slate-200 rotate-180" />
+  </div>
 );
 
 export default HealthDashboard;

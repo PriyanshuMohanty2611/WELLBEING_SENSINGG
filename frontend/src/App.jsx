@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, Activity, User, Shield, Sparkles, Plus, Zap, Wind } from 'lucide-react';
+import { 
+  Heart, Activity, User, Shield, Sparkles, Plus, 
+  Zap, Wind, LayoutGrid, Moon, Utensils, Footprints, MessageSquare 
+} from 'lucide-react';
 import HealthDashboard from './components/HealthDashboard';
 import MeasurementUI from './components/MeasurementUI';
 import AICoherence from './components/AICoherence';
@@ -8,10 +11,14 @@ import HealthInsights from './components/HealthInsights';
 import UserProfile from './components/UserProfile';
 import QuickActionMenu from './components/QuickActionMenu';
 import SomaticBreathing from './components/SomaticBreathing';
+import WellnessHub from './components/WellnessHub';
+import SleepTracker from './components/SleepTracker';
+import NutritionLog from './components/NutritionLog';
+import ActivityMetrics from './components/ActivityMetrics';
 
 const App = () => {
   const [screen, setScreen] = useState('welcome'); // welcome, dashboard, measure
-  const [activeTab, setActiveTab] = useState('activity'); // activity, insights, chat, profile, flow
+  const [activeTab, setActiveTab] = useState('hub'); // hub, activity, insights, chat, profile, sleep, nutrition
   const [systemOverlay, setSystemOverlay] = useState(false);
   const [showBreathing, setShowBreathing] = useState(false);
   const [healthData, setHealthData] = useState(null);
@@ -29,20 +36,20 @@ const App = () => {
 
   const WelcomeScreen = () => (
     <div className="min-h-screen bg-white text-slate-900 p-6 flex flex-col items-center justify-center overflow-hidden relative selection:bg-cyan-500/30">
-      <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-cyan-100 blur-[150px] rounded-full opacity-50" />
-      <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-purple-100 blur-[150px] rounded-full opacity-50" />
+      <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-slate-50 blur-[150px] rounded-full opacity-50" />
+      <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-slate-100 blur-[150px] rounded-full opacity-50" />
       
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 text-center space-y-12">
-        <div className="relative">
-          <div className="w-24 h-24 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-[2.5rem] mx-auto flex items-center justify-center shadow-xl shadow-cyan-200">
-            <Zap size={48} className="text-white" />
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 text-center space-y-12 max-w-lg">
+        <div className="relative inline-block">
+          <div className="w-24 h-24 bg-slate-900 rounded-[2.5rem] mx-auto flex items-center justify-center shadow-2xl shadow-slate-300">
+            <Shield size={48} className="text-cyan-400" />
           </div>
-          <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }} className="absolute -inset-4 border border-dashed border-cyan-200 rounded-full" />
+          <motion.div animate={{ rotate: 360 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }} className="absolute -inset-6 border border-dashed border-slate-200 rounded-full" />
         </div>
         
         <div className="space-y-4">
-          <h1 className="text-6xl font-black tracking-tighter italic uppercase text-slate-900">WELLBEING<span className="text-cyan-600">_SENSINGG</span></h1>
-          <p className="text-slate-400 text-[10px] font-black tracking-[0.6em] uppercase">The Human Operating System</p>
+          <h1 className="text-6xl font-black tracking-tighter italic uppercase text-slate-900 leading-none">NEURO<span className="text-cyan-600">PULSE</span></h1>
+          <p className="text-slate-400 text-[11px] font-black tracking-[0.5em] uppercase">Enterprise Biometric Intelligence Platform</p>
         </div>
 
         <div className="space-y-6 pt-10">
@@ -50,13 +57,16 @@ const App = () => {
             whileHover={{ scale: 1.05 }} 
             whileTap={{ scale: 0.95 }} 
             onClick={() => setScreen(healthData ? 'dashboard' : 'measure')} 
-            className="w-full py-5 px-20 bg-slate-900 text-white rounded-3xl font-black text-xs tracking-[0.3em] uppercase shadow-2xl shadow-slate-200 transition-all"
+            className="w-full py-6 px-16 bg-slate-900 text-white rounded-[2rem] font-black text-xs tracking-[0.4em] uppercase shadow-2xl shadow-slate-200 transition-all active:scale-95"
           >
-            Authorize Access
+            Authenticate Portal
           </motion.button>
-          <p className="text-slate-400 text-[9px] uppercase font-bold tracking-widest flex items-center justify-center gap-2">
-            <Shield size={14} className="text-cyan-600" /> SECURE BIOMETRIC DATA ENCRYPTION
-          </p>
+          <div className="flex flex-col items-center gap-2">
+            <p className="text-slate-400 text-[9px] uppercase font-bold tracking-widest flex items-center justify-center gap-2">
+              <Shield size={14} className="text-emerald-600" /> GOVERNMENT-GRADE ENCRYPTION ACTIVE
+            </p>
+            <p className="text-slate-300 text-[8px] font-medium max-w-xs leading-relaxed uppercase tracking-tighter">Authorized Use Only. All data points are locally processed and end-to-end neural encrypted.</p>
+          </div>
         </div>
       </motion.div>
     </div>
@@ -64,11 +74,15 @@ const App = () => {
 
   const renderDashboardContent = () => {
     switch(activeTab) {
-      case 'activity': return <HealthDashboard data={healthData} onBack={() => setShowBreathing(true)} />;
+      case 'hub': return <WellnessHub onNavigate={(page) => setActiveTab(page)} />;
+      case 'activity': return <ActivityMetrics onBack={() => setActiveTab('hub')} />;
+      case 'sleep': return <SleepTracker onBack={() => setActiveTab('hub')} />;
+      case 'nutrition': return <NutritionLog onBack={() => setActiveTab('hub')} />;
       case 'insights': return <HealthInsights userId={1} />;
       case 'chat': return <AICoherence healthData={healthData} />;
-      case 'profile': return <UserProfile />;
-      default: return <HealthDashboard data={healthData} onBack={() => setShowBreathing(true)} />;
+      case 'profile': return <UserProfile onLogout={() => setScreen('welcome')} />;
+      case 'biometrics': return <HealthDashboard data={healthData} onBack={() => setShowBreathing(true)} />;
+      default: return <WellnessHub onNavigate={(page) => setActiveTab(page)} />;
     }
   };
 
@@ -79,7 +93,7 @@ const App = () => {
     } else if (action === 'mood') {
         setShowBreathing(true);
     } else {
-      alert(`Neural Module ${action.toUpperCase()} initialized.`);
+      setActiveTab(action);
     }
   };
 
@@ -92,7 +106,7 @@ const App = () => {
              {renderDashboardContent()}
           </motion.div>
         )}
-        {screen === 'measure' && <MeasurementUI key="measure" onComplete={(d) => { setHealthData(d); setScreen('dashboard'); setActiveTab('activity'); }} onCancel={() => setScreen('welcome')} />}
+        {screen === 'measure' && <MeasurementUI key="measure" onComplete={(d) => { setHealthData(d); setScreen('dashboard'); setActiveTab('biometrics'); }} onCancel={() => setScreen('welcome')} />}
       </AnimatePresence>
 
       <AnimatePresence>
@@ -106,19 +120,23 @@ const App = () => {
       />
 
       {screen === 'dashboard' && (
-        <nav className="fixed bottom-0 left-0 right-0 h-28 bg-white/90 backdrop-blur-3xl border-t border-slate-100 flex items-center justify-around px-8 z-[60] shadow-[0_-10px_30px_rgba(0,0,0,0.02)]">
-          <NavItem icon={<Activity />} active={activeTab === 'activity'} onClick={() => setActiveTab('activity')} />
-          <NavItem icon={<Heart />} active={activeTab === 'insights'} onClick={() => setActiveTab('insights')} />
+        <nav className="fixed bottom-0 left-0 right-0 h-28 bg-white/95 backdrop-blur-3xl border-t border-slate-100 flex items-center justify-around px-8 z-[60] shadow-[0_-15px_40px_rgba(0,0,0,0.03)]">
+          <NavItem icon={<LayoutGrid />} active={activeTab === 'hub'} onClick={() => setActiveTab('hub')} />
+          <NavItem icon={<Activity />} active={activeTab === 'biometrics'} onClick={() => setActiveTab('biometrics')} />
+          
           <div className="relative">
-             <button 
+             <motion.button 
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={() => setSystemOverlay(true)} 
-                className="w-16 h-16 bg-slate-900 rounded-[2rem] flex items-center justify-center shadow-xl shadow-slate-200 relative z-10 transition-transform active:scale-90"
+                className="w-16 h-16 bg-slate-900 rounded-[2rem] flex items-center justify-center shadow-xl shadow-slate-200 relative z-10 transition-all active:scale-90"
               >
-                <Plus className="text-white" size={32} />
-              </button>
-              <div className="absolute inset-0 bg-cyan-500/20 blur-2xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <Plus className="text-cyan-400" size={32} />
+              </motion.button>
+              <div className="absolute inset-0 bg-cyan-500/10 blur-2xl rounded-full scale-150 opacity-100" />
           </div>
-          <NavItem icon={<Sparkles />} active={activeTab === 'chat'} onClick={() => setActiveTab('chat')} />
+
+          <NavItem icon={<MessageSquare />} active={activeTab === 'chat'} onClick={() => setActiveTab('chat')} />
           <NavItem icon={<User />} active={activeTab === 'profile'} onClick={() => setActiveTab('profile')} />
         </nav>
       )}
@@ -129,7 +147,7 @@ const App = () => {
 const NavItem = ({ icon, active, onClick }) => (
   <button 
     onClick={onClick}
-    className={`p-4 rounded-3xl transition-all duration-300 relative ${active ? 'text-slate-900' : 'text-slate-400 hover:text-slate-600'}`}
+    className={`p-4 rounded-3xl transition-all duration-300 relative group ${active ? 'text-slate-900 bg-slate-50' : 'text-slate-400 hover:text-slate-600'}`}
   >
     {active && (
       <motion.div 
@@ -137,7 +155,7 @@ const NavItem = ({ icon, active, onClick }) => (
         className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-cyan-500 rounded-full"
       />
     )}
-    {React.cloneElement(icon, { size: 26, strokeWidth: active ? 2.5 : 2 })}
+    {React.cloneElement(icon, { size: 24, strokeWidth: active ? 2.5 : 2 })}
   </button>
 );
 
