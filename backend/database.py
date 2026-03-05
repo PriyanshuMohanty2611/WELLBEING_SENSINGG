@@ -1,20 +1,30 @@
-from sqlalchemy import create_engine
+import os
+from sqlalchemy import create_engine, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# Fallback to SQLite because Postgres credentials 'admin/admin' failed
-# PostgreSQL configuration as requested
-DATABASE_URL = "postgresql://admin:admin@localhost:5432/neuropulse"
+# 1. Primary choice: Environment Variable (Render/Production)
+# 2. Secondary choice: Local Postgres (admin/admin)
+# 3. Fallback: SQLite
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://admin:admin@localhost:5432/neuropulse")
+
+def get_engine(url):
+    if url.startswith("sqlite"):
+        return create_engine(url, connect_args={"check_same_thread": False})
+    return create_engine(url)
 
 try:
-    engine = create_engine(DATABASE_URL)
+    # Try to connect to the specified DATABASE_URL
+    engine = get_engine(DATABASE_URL)
+    # Force a connection check
+    with engine.connect() as conn:
+        conn.execute(text("SELECT 1"))
 except Exception as e:
-    # Fallback to SQLite for local development if PG is not reachable
-    print(f"PostgreSQL connection failed: {e}. Falling back to SQLite for development.")
-    DATABASE_URL = "sqlite:///./neuro_pulse.db"
-    engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    print(f"Primary database connection failed: {e}. Falling back to local SQLite.")
+    DATABASE_URL = "sqlite:///./wellbeing.db"
+    engine = get_engine(DATABASE_URL)
 
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 def get_db():
