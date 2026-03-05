@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Camera, Shield, X, CheckCircle2, AlertCircle, Heart } from 'lucide-react';
+import { Camera, Shield, X, CheckCircle2, AlertCircle, Heart, ChevronRight, Sparkles } from 'lucide-react';
 import GlassCard from './GlassCard';
 
 const MeasurementUI = ({ onComplete, onCancel }) => {
