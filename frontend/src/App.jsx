@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, Activity, User, Shield, Sparkles, Plus, Bell, Settings, HeartPulse, Zap } from 'lucide-react';
+import { Heart, Activity, User, Shield, Sparkles, Plus, Zap } from 'lucide-react';
 import HealthDashboard from './components/HealthDashboard';
 import MeasurementUI from './components/MeasurementUI';
-import GlassCard from './components/GlassCard';
+import AICoherence from './components/AICoherence';
+import HealthInsights from './components/HealthInsights';
+import UserProfile from './components/UserProfile';
 
 const App = () => {
-  const [screen, setScreen] = useState('welcome');
+  const [screen, setScreen] = useState('welcome'); // welcome, dashboard, measure
+  const [activeTab, setActiveTab] = useState('activity'); // activity, insights, chat, profile
   const [healthData, setHealthData] = useState(null);
 
   useEffect(() => {
@@ -50,32 +53,55 @@ const App = () => {
     </div>
   );
 
+  const renderDashboardContent = () => {
+    switch(activeTab) {
+      case 'activity': return <HealthDashboard data={healthData} onBack={() => setScreen('measure')} />;
+      case 'insights': return <HealthInsights userId={1} />;
+      case 'chat': return <AICoherence healthData={healthData} />;
+      case 'profile': return <UserProfile />;
+      default: return <HealthDashboard data={healthData} onBack={() => setScreen('measure')} />;
+    }
+  };
+
   return (
     <div className="font-sans antialiased select-none">
       <AnimatePresence mode="wait">
         {screen === 'welcome' && <WelcomeScreen key="welcome" />}
-        {screen === 'dashboard' && <HealthDashboard key="dashboard" data={healthData} onBack={() => setScreen('measure')} />}
-        {screen === 'measure' && <MeasurementUI key="measure" onComplete={(d) => { setHealthData(d); setScreen('dashboard'); }} onCancel={() => setScreen('welcome')} />}
+        {screen === 'dashboard' && (
+          <motion.div key="dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-screen">
+             {renderDashboardContent()}
+          </motion.div>
+        )}
+        {screen === 'measure' && <MeasurementUI key="measure" onComplete={(d) => { setHealthData(d); setScreen('dashboard'); setActiveTab('activity'); }} onCancel={() => setScreen('welcome')} />}
       </AnimatePresence>
 
       {screen === 'dashboard' && (
-        <nav className="fixed bottom-0 left-0 right-0 h-24 bg-black/80 backdrop-blur-3xl border-t border-white/5 flex items-center justify-around px-8 z-50">
-          <NavItem icon={<Activity />} active />
-          <NavItem icon={<Heart />} />
-          <button onClick={() => setScreen('measure')} className="w-16 h-16 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-2xl -mt-12 flex items-center justify-center shadow-2xl shadow-cyan-500/40">
+        <nav className="fixed bottom-0 left-0 right-0 h-24 bg-black/80 backdrop-blur-3xl border-t border-white/5 flex items-center justify-around px-8 z-[60]">
+          <NavItem icon={<Activity />} active={activeTab === 'activity'} onClick={() => setActiveTab('activity')} />
+          <NavItem icon={<Heart />} active={activeTab === 'insights'} onClick={() => setActiveTab('insights')} />
+          <button onClick={() => setScreen('measure')} className="w-16 h-16 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-2xl -mt-12 flex items-center justify-center shadow-2xl shadow-cyan-500/40 relative z-10 transition-transform active:scale-90">
             <Plus className="text-white" size={32} />
           </button>
-          <NavItem icon={<Sparkles />} />
-          <NavItem icon={<User />} />
+          <NavItem icon={<Sparkles />} active={activeTab === 'chat'} onClick={() => setActiveTab('chat')} />
+          <NavItem icon={<User />} active={activeTab === 'profile'} onClick={() => setActiveTab('profile')} />
         </nav>
       )}
     </div>
   );
 };
 
-const NavItem = ({ icon, active }) => (
-  <button className={`p-4 rounded-2xl transition-all ${active ? 'bg-cyan-500/10 text-cyan-400' : 'text-gray-500 hover:text-gray-300'}`}>
-    {React.cloneElement(icon, { size: 24 })}
+const NavItem = ({ icon, active, onClick }) => (
+  <button 
+    onClick={onClick}
+    className={`p-4 rounded-2xl transition-all duration-300 relative ${active ? 'text-cyan-400' : 'text-gray-500 hover:text-gray-300'}`}
+  >
+    {active && (
+      <motion.div 
+        layoutId="navGlow"
+        className="absolute inset-0 bg-cyan-500/10 blur-xl rounded-full"
+      />
+    )}
+    {React.cloneElement(icon, { size: 24, strokeWidth: active ? 2.5 : 2 })}
   </button>
 );
 
