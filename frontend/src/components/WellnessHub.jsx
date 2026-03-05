@@ -141,8 +141,8 @@ const WellnessHub = ({ onNavigate }) => {
           </div>
 
           {/* Restoration Index */}
-          <div className="lg:col-span-4">
-            <GlassCard className="h-full p-10 bg-slate-900 border-none text-white shadow-enterprise-lg relative overflow-hidden">
+          <div className="lg:col-span-4 cursor-pointer" onClick={() => onNavigate('sleep')}>
+            <GlassCard className="h-full p-10 bg-slate-900 border-none text-white shadow-enterprise-lg relative overflow-hidden active:scale-[0.98] transition-all">
               <div className="relative z-10">
                 <div className="flex justify-between items-start mb-12">
                   <div className="p-3 bg-white/5 rounded-xl border border-white/10 text-indigo-400 shadow-inner">

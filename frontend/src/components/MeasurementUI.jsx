@@ -96,7 +96,7 @@ const MeasurementUI = ({ onComplete, onCancel }) => {
             className="absolute -inset-8 rounded-full border border-dashed border-slate-300"
           />
           
-          <div className="absolute inset-2 rounded-[3.5rem] overflow-hidden bg-white border-[10px] border-white shadow-2xl relative">
+          <div className="absolute inset-2 rounded-[3.5rem] overflow-hidden bg-white border-[10px] border-white shadow-2xl">
             <video ref={videoRef} autoPlay muted playsInline className="w-full h-full object-cover grayscale contrast-150 brightness-110 opacity-30" />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent" />
             <AnimatePresence>
