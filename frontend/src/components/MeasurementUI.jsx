@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Camera, Shield, X, CheckCircle2, AlertCircle, Heart, ChevronRight, Sparkles } from 'lucide-react';
+import { Camera, Shield, X, CheckCircle2, AlertCircle, Heart, ChevronRight, Sparkles, Activity, ShieldCheck, Terminal } from 'lucide-react';
 import GlassCard from './GlassCard';
 
 const MeasurementUI = ({ onComplete, onCancel }) => {
@@ -56,38 +56,49 @@ const MeasurementUI = ({ onComplete, onCancel }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-white z-[100] flex flex-col p-6 overflow-hidden">
+    <div className="fixed inset-0 bg-[#f8fafc] z-[100] flex flex-col p-8 overflow-hidden font-sans selection:bg-cyan-500/30">
+      {/* Neural lattice background grid */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#1e293b 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+      
       {/* Background soft gradients */}
       <div className="absolute inset-0 opacity-40 pointer-events-none">
-        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-cyan-100 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-100 blur-[120px] rounded-full" />
+        <div className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-slate-200 blur-[150px] rounded-full" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-50 blur-[150px] rounded-full" />
       </div>
 
-      <header className="flex justify-between items-center mb-12 relative z-10">
-        <button onClick={onCancel} className="p-4 bg-slate-50 rounded-3xl text-slate-400 hover:text-slate-900 transition-colors shadow-sm">
+      <header className="flex justify-between items-center mb-16 relative z-10 pt-4">
+        <motion.button 
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={onCancel} 
+            className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center border border-slate-100 shadow-enterprise text-slate-400 hover:text-slate-900 transition-all"
+        >
           <ChevronRight className="rotate-180" size={24} />
-        </button>
+        </motion.button>
         <div className="text-center">
-            <h2 className="text-xl font-black tracking-[0.3em] uppercase italic text-cyan-600">Neuro-Link</h2>
-            <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest mt-0.5">SYNCHRONIZING CORE</p>
+            <h2 className="text-2xl font-black tracking-[0.4em] uppercase italic text-slate-900 leading-none">NEURO<span className="text-cyan-600">PULSE</span></h2>
+            <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.5em] mt-1.5 opacity-60">BIOMETRIC REGISTRY • SYNCHRONIZING</p>
         </div>
-        <div className="w-10" />
+        <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center border border-slate-100 shadow-enterprise">
+           <Terminal size={20} className="text-slate-900" />
+        </div>
       </header>
 
       <div className="flex-1 flex flex-col items-center justify-center relative z-10">
-        <div className="relative w-80 h-80 mb-16">
-          <div className="absolute inset-0 rounded-full border border-cyan-100 animate-pulse" />
-          <div className="absolute -inset-4 rounded-full border border-slate-50" />
+        <div className="relative w-80 h-80 mb-20">
+          {/* Animated concentric rings */}
+          <div className="absolute inset-0 rounded-full border border-slate-200/50" />
+          <div className="absolute -inset-4 rounded-full border border-slate-100" />
           
           <motion.div 
             animate={{ rotate: 360 }}
-            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-0 rounded-full border border-dashed border-cyan-200"
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="absolute -inset-8 rounded-full border border-dashed border-slate-300"
           />
           
-          <div className="absolute inset-2 rounded-full overflow-hidden bg-white border-8 border-white shadow-2xl">
-            <video ref={videoRef} autoPlay muted playsInline className="w-full h-full object-cover grayscale contrast-125 opacity-40" />
-            <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/10 to-transparent" />
+          <div className="absolute inset-2 rounded-[3.5rem] overflow-hidden bg-white border-[10px] border-white shadow-2xl relative">
+            <video ref={videoRef} autoPlay muted playsInline className="w-full h-full object-cover grayscale contrast-150 brightness-110 opacity-30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent" />
             <AnimatePresence>
                 {status === 'recording' && (
                     <motion.div 
@@ -96,42 +107,67 @@ const MeasurementUI = ({ onComplete, onCancel }) => {
                         exit={{ opacity: 0 }}
                         className="absolute inset-0 flex items-center justify-center"
                     >
-                        <Heart size={80} className="text-rose-500 opacity-20 animate-ping" />
+                        <Heart size={100} className="text-rose-500 opacity-20 animate-ping" />
                     </motion.div>
                 )}
             </AnimatePresence>
+            
+            {/* Holographic scanning overlay */}
+            <motion.div 
+                animate={{ y: ["0%", "100%", "0%"] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-x-0 h-0.5 bg-cyan-400 shadow-[0_0_15px_#22d3ee] z-20"
+            />
           </div>
 
-          <svg className="absolute -inset-2 w-[calc(100%+1rem)] h-[calc(100%+1rem)] -rotate-90 pointer-events-none">
-            <circle cx="50%" cy="50%" r="48%" stroke="#e2e8f0" strokeWidth="4" fill="none" />
-            <circle cx="50%" cy="50%" r="48%" stroke="#06b6d4" strokeWidth="4" fill="none" strokeDasharray="100 100" strokeDashoffset={100 - progress} strokeLinecap="round" pathLength="100" />
+          <svg className="absolute -inset-4 w-[calc(100%+2rem)] h-[calc(100%+2rem)] -rotate-90 pointer-events-none">
+            <circle cx="50%" cy="50%" r="48%" stroke="#f1f5f9" strokeWidth="6" fill="none" />
+            <circle 
+                cx="50%" 
+                cy="50%" 
+                r="48%" 
+                stroke="#0f172a" 
+                strokeWidth="6" 
+                fill="none" 
+                strokeDasharray="100 100" 
+                strokeDashoffset={100 - progress} 
+                strokeLinecap="round" 
+                pathLength="100" 
+                style={{ transition: 'stroke-dashoffset 0.1s linear' }}
+            />
           </svg>
         </div>
 
         <div className="text-center">
           <AnimatePresence mode="wait">
             {status === 'recording' ? (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <div className="text-8xl font-black text-slate-900 mb-2 tracking-tighter italic">{heartRate}</div>
-                <div className="flex items-center justify-center gap-3">
-                   <span className="w-2.5 h-2.5 bg-rose-500 rounded-full animate-ping" />
-                   <p className="text-slate-500 text-[10px] font-black tracking-widest uppercase">Capturing Biological Rhythm...</p>
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                <div className="text-9xl font-black text-slate-900 mb-4 tracking-tighter italic leading-none">{heartRate}</div>
+                <div className="flex items-center justify-center gap-4 bg-white/50 px-6 py-2 rounded-full border border-slate-100 shadow-sm">
+                   <span className="w-3 h-3 bg-rose-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(244,63,94,0.5)]" />
+                   <p className="text-slate-900 text-[10px] font-black tracking-[0.4em] uppercase">Biological Flux Identified</p>
                 </div>
               </motion.div>
             ) : status === 'processing' ? (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
                 <div className="flex flex-col items-center">
-                   <Sparkles className="text-cyan-600 mb-6 animate-bounce" size={48} />
-                   <p className="text-slate-900 font-black tracking-[0.3em] uppercase text-sm">AI Analytics Extraction</p>
-                   <p className="text-slate-400 text-[10px] font-bold mt-2 uppercase tracking-widest">Mapping Neural Pathways</p>
+                   <div className="w-20 h-20 bg-slate-900 rounded-3xl flex items-center justify-center mb-8 shadow-2xl shadow-slate-200">
+                      <Sparkles className="text-cyan-400 animate-pulse" size={40} />
+                   </div>
+                   <p className="text-slate-900 font-black tracking-[0.5em] uppercase text-sm italic">AI REGISTRY SYNCHRONIZATION</p>
+                   <p className="text-slate-400 text-[9px] font-black mt-3 uppercase tracking-[0.4em] opacity-60">Architecting Neural Recovery Data</p>
                 </div>
               </motion.div>
             ) : (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                   <h3 className="text-3xl font-black italic uppercase text-slate-900">Initialize PPG Link</h3>
-                   <p className="text-slate-500 text-xs mt-4 max-w-[280px] mx-auto leading-relaxed">
-                     Place your fingertip completely over the <span className="text-cyan-600 font-bold">rear camera lens</span>. 
-                     The system uses light variations to pulse sync with your neural core.
+                   <div className="bg-emerald-50 px-5 py-1.5 rounded-full border border-emerald-100 inline-flex items-center gap-2 mb-6">
+                      <ShieldCheck size={14} className="text-emerald-500" />
+                      <span className="text-[9px] font-black text-emerald-600 uppercase tracking-widest leading-none">System Integrity Verified</span>
+                   </div>
+                   <h3 className="text-4xl font-black italic uppercase text-slate-900 tracking-tighter leading-tight">Initialize <span className="text-cyan-600">PPG Link</span></h3>
+                   <p className="text-slate-400 text-[10px] font-black mt-6 max-w-[320px] mx-auto leading-loose uppercase tracking-[0.2em]">
+                     Align your index vector over the <span className="text-slate-900">primary sensory lens</span>. 
+                     The protocol requires 10 seconds of hemodynamic stability.
                    </p>
                 </motion.div>
             )}
@@ -139,15 +175,24 @@ const MeasurementUI = ({ onComplete, onCancel }) => {
         </div>
       </div>
 
-      <footer className="mt-auto relative z-10 pb-10">
+      <footer className="mt-auto relative z-10 pb-12 w-full max-w-lg mx-auto">
         {status === 'idle' && (
-          <button onClick={startScanning} className="w-full py-6 bg-slate-900 text-white rounded-[2.5rem] font-black uppercase tracking-[0.3em] text-xs shadow-xl shadow-slate-200 transition-all active:scale-95">
-            Begin Biometric Scan
-          </button>
+          <motion.button 
+            whileHover={{ y: -5, backgroundColor: '#0f172a' }}
+            whileTap={{ scale: 0.98 }}
+            onClick={startScanning} 
+            className="w-full py-7 bg-slate-900 text-white rounded-[2.5rem] font-black uppercase tracking-[0.5em] text-[11px] shadow-2xl shadow-slate-300 transition-all flex items-center justify-center gap-4 group"
+          >
+            <Activity size={18} className="text-cyan-400 group-hover:animate-pulse" />
+            Begin Neural Scan
+          </motion.button>
         )}
-        <p className="text-center text-slate-300 text-[9px] mt-8 flex items-center justify-center gap-3 font-black tracking-widest uppercase">
-          <Shield size={14} className="text-cyan-600" /> Secured Bio-Packet Protocol Active
-        </p>
+        <div className="flex flex-col items-center gap-2 mt-10">
+            <p className="text-slate-300 text-[9px] font-black tracking-[0.4em] uppercase flex items-center gap-3">
+              <Shield size={14} className="text-emerald-500" /> Neural-Encrypted Data Portal
+            </p>
+            <p className="text-[8px] text-slate-200 font-bold uppercase tracking-tighter">Authorized Usage Only • V4.2.0-CORE</p>
+        </div>
       </footer>
     </div>
   );
