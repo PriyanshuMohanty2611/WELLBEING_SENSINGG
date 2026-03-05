@@ -7,7 +7,7 @@ const GlassCard = ({ children, className = "", delay = 0 }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay }}
-      className={`backdrop-blur-xl bg-white/10 border border-white/20 rounded-[2rem] p-6 shadow-2xl ${className}`}
+      className={`bg-white/80 backdrop-blur-xl border border-slate-200 rounded-[2.5rem] p-6 shadow-sm ${className}`}
     >
       {children}
     </motion.div>

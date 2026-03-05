@@ -56,43 +56,55 @@ const MeasurementUI = ({ onComplete, onCancel }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-[#02020a] z-[100] flex flex-col p-6 overflow-hidden">
-      {/* Background Matrix-like effect */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-cyan-500 to-transparent" />
-        <div className="absolute top-0 left-2/4 w-px h-full bg-gradient-to-b from-transparent via-purple-500 to-transparent" />
-        <div className="absolute top-0 left-3/4 w-px h-full bg-gradient-to-b from-transparent via-cyan-500 to-transparent" />
+    <div className="fixed inset-0 bg-white z-[100] flex flex-col p-6 overflow-hidden">
+      {/* Background soft gradients */}
+      <div className="absolute inset-0 opacity-40 pointer-events-none">
+        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-cyan-100 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-100 blur-[120px] rounded-full" />
       </div>
 
       <header className="flex justify-between items-center mb-12 relative z-10">
-        <button onClick={onCancel} className="p-3 bg-white/5 rounded-2xl text-gray-400 hover:text-white transition-colors">
+        <button onClick={onCancel} className="p-4 bg-slate-50 rounded-3xl text-slate-400 hover:text-slate-900 transition-colors shadow-sm">
           <ChevronRight className="rotate-180" size={24} />
         </button>
         <div className="text-center">
-            <h2 className="text-xl font-black tracking-[0.3em] uppercase italic text-cyan-400">Neuro-Link</h2>
-            <p className="text-gray-500 text-[10px] font-bold">SYNCHRONIZING BIOMETRICS</p>
+            <h2 className="text-xl font-black tracking-[0.3em] uppercase italic text-cyan-600">Neuro-Link</h2>
+            <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest mt-0.5">SYNCHRONIZING CORE</p>
         </div>
         <div className="w-10" />
       </header>
 
       <div className="flex-1 flex flex-col items-center justify-center relative z-10">
         <div className="relative w-80 h-80 mb-16">
-          <div className="absolute inset-0 rounded-full border border-cyan-500/20 animate-pulse" />
-          <div className="absolute -inset-4 rounded-full border border-purple-500/10" />
+          <div className="absolute inset-0 rounded-full border border-cyan-100 animate-pulse" />
+          <div className="absolute -inset-4 rounded-full border border-slate-50" />
           
           <motion.div 
             animate={{ rotate: 360 }}
-            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-0 rounded-full border border-dashed border-cyan-500/40"
+            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-0 rounded-full border border-dashed border-cyan-200"
           />
           
-          <div className="absolute inset-2 rounded-full overflow-hidden bg-black border-2 border-white/10">
-            <video ref={videoRef} autoPlay muted playsInline className="w-full h-full object-cover opacity-50 contrast-125 saturate-0" />
-            <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/20 to-transparent" />
+          <div className="absolute inset-2 rounded-full overflow-hidden bg-white border-8 border-white shadow-2xl relative">
+            <video ref={videoRef} autoPlay muted playsInline className="w-full h-full object-cover grayscale contrast-125 opacity-40" />
+            <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/10 to-transparent" />
+            <AnimatePresence>
+                {status === 'recording' && (
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute inset-0 flex items-center justify-center"
+                    >
+                        <Heart size={80} className="text-rose-500 opacity-20 animate-ping" />
+                    </motion.div>
+                )}
+            </AnimatePresence>
           </div>
 
-          <svg className="absolute -inset-2 w-[calc(100%+1rem)] h-[calc(100%+1rem)] -rotate-90">
-            <circle cx="50%" cy="50%" r="48%" stroke="#06b6d4" strokeWidth="2" fill="none" strokeDasharray="100 100" strokeDashoffset={100 - progress} strokeLinecap="round" pathLength="100" />
+          <svg className="absolute -inset-2 w-[calc(100%+1rem)] h-[calc(100%+1rem)] -rotate-90 pointer-events-none">
+            <circle cx="50%" cy="50%" r="48%" stroke="#e2e8f0" strokeWidth="4" fill="none" />
+            <circle cx="50%" cy="50%" r="48%" stroke="#06b6d4" strokeWidth="4" fill="none" strokeDasharray="100 100" strokeDashoffset={100 - progress} strokeLinecap="round" pathLength="100" />
           </svg>
         </div>
 
@@ -100,25 +112,26 @@ const MeasurementUI = ({ onComplete, onCancel }) => {
           <AnimatePresence mode="wait">
             {status === 'recording' ? (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <div className="text-7xl font-black text-white mb-2 tracking-tighter italic">{heartRate}</div>
+                <div className="text-8xl font-black text-slate-900 mb-2 tracking-tighter italic">{heartRate}</div>
                 <div className="flex items-center justify-center gap-3">
-                   <span className="w-2 h-2 bg-cyan-400 rounded-full animate-ping" />
-                   <p className="text-cyan-400 text-xs font-bold tracking-widest uppercase">Capturing Neural Pulse...</p>
+                   <span className="w-2.5 h-2.5 bg-rose-500 rounded-full animate-ping" />
+                   <p className="text-slate-500 text-[10px] font-black tracking-widest uppercase">Capturing Biological Rhythm...</p>
                 </div>
               </motion.div>
             ) : status === 'processing' ? (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <div className="flex flex-col items-center">
-                   <Sparkles className="text-cyan-400 mb-4 animate-bounce" size={32} />
-                   <p className="text-white font-bold tracking-widest uppercase">AI Core Analyzing Signal</p>
+                   <Sparkles className="text-cyan-600 mb-6 animate-bounce" size={48} />
+                   <p className="text-slate-900 font-black tracking-[0.3em] uppercase text-sm">AI Analytics Extraction</p>
+                   <p className="text-slate-400 text-[10px] font-bold mt-2 uppercase tracking-widest">Mapping Neural Pathways</p>
                 </div>
               </motion.div>
             ) : (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                   <h3 className="text-2xl font-black italic uppercase">Initialize PPG Link</h3>
-                   <p className="text-gray-500 text-xs mt-2 max-w-[240px] mx-auto leading-relaxed">
-                     Place your fingertip completely over the <span className="text-white">rear camera lens</span>. 
-                     The system will use Photoplethysmography (light-based sensing) to calculate your neural pulse.
+                   <h3 className="text-3xl font-black italic uppercase text-slate-900">Initialize PPG Link</h3>
+                   <p className="text-slate-500 text-xs mt-4 max-w-[280px] mx-auto leading-relaxed">
+                     Place your fingertip completely over the <span className="text-cyan-600 font-bold">rear camera lens</span>. 
+                     The system uses light variations to pulse sync with your neural core.
                    </p>
                 </motion.div>
             )}
@@ -126,14 +139,14 @@ const MeasurementUI = ({ onComplete, onCancel }) => {
         </div>
       </div>
 
-      <footer className="mt-auto relative z-10">
+      <footer className="mt-auto relative z-10 pb-10">
         {status === 'idle' && (
-          <button onClick={startScanning} className="w-full py-5 bg-gradient-to-r from-cyan-600 to-purple-600 rounded-2xl font-black uppercase tracking-widest shadow-[0_0_30px_rgba(6,182,212,0.3)]">
+          <button onClick={startScanning} className="w-full py-6 bg-slate-900 text-white rounded-[2.5rem] font-black uppercase tracking-[0.3em] text-xs shadow-xl shadow-slate-200 transition-all active:scale-95">
             Begin Biometric Scan
           </button>
         )}
-        <p className="text-center text-gray-600 text-[10px] mt-6 flex items-center justify-center gap-2">
-          <Shield size={12} /> SECURE NEURAL ENCRYPTION ACTIVE
+        <p className="text-center text-slate-300 text-[9px] mt-8 flex items-center justify-center gap-3 font-black tracking-widest uppercase">
+          <Shield size={14} className="text-cyan-600" /> Secured Bio-Packet Protocol Active
         </p>
       </footer>
     </div>
