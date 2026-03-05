@@ -2,9 +2,12 @@ psycopg2-binary
 fastapi
 uvicorn
 sqlalchemy
-opencv-python
+opencv-python-headless
 numpy
 scipy
 pydantic
 python-multipart
 requests
+pandas
+scikit-learn
+python-dotenv
